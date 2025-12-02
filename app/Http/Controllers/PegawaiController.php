@@ -23,11 +23,37 @@ class PegawaiController extends Controller
         DB::table('pegawais')->insert([
             'nama' => $request->nama,
             'posisi' => $request->posisi,
-            'gaji' => $request->gaji,
+            'gaji'   => $request->gaji,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
         return redirect()->route('home')->with('success', 'Pegawai berhasil ditambahkan!');
+    }
+
+    public function edit($id)
+    {
+        $pegawai = DB::table('pegawais')->where('id', $id)->first();
+
+        return view('editPegawai', compact('pegawai'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        DB::table('pegawais')->where('id', $id)->update([
+            'nama' => $request->nama,
+            'posisi' => $request->posisi,
+            'gaji' => $request->gaji,
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('home')->with('success', 'Data pegawai berhasil diupdate!');
+    }
+
+    public function destroy($id)
+    {
+        DB::table('pegawais')->where('id', $id)->delete();
+
+        return redirect()->route('home')->with('success', 'Pegawai berhasil dihapus!');
     }
 }

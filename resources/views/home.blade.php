@@ -10,7 +10,6 @@
 
 <body style="background-color: #f8f9fa;">
 
-    <!-- Header -->
     <nav class="navbar navbar-dark bg-dark mb-4">
         <div class="container-fluid">
             <span class="navbar-brand">PT. Rangga</span>
@@ -42,13 +41,14 @@
                             <th>Nama</th>
                             <th>Posisi</th>
                             <th>Gaji</th>
+                            <th style="width: 180px" class="text-center">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         @if($pegawai->count() == 0)
                         <tr>
-                            <td colspan="4" class="text-center">No data available.</td>
+                            <td colspan="5" class="text-center">No data available.</td>
                         </tr>
                         @else
                         @foreach($pegawai as $p)
@@ -57,6 +57,19 @@
                             <td>{{ $p->nama }}</td>
                             <td>{{ $p->posisi }}</td>
                             <td>Rp {{ number_format($p->gaji, 0, ',', '.') }}</td>
+
+                            <td class="text-center">
+                                <a href="{{ route('pegawai.edit', $p->id) }}" class="btn btn-warning btn-sm">Edit</a>
+
+                                <form action="{{ route('pegawai.delete', $p->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Yakin ingin menghapus data?')">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                         @endforeach
                         @endif
